@@ -27,10 +27,10 @@ def sqrt(x):
 def DH(ap,a,d,th):
 	# <|:^)< wizardly visit ???
 	R=numpy.array([
-	[c(th),	-s(th),	0,	a],
+	[c(th)       ,   	-s(th) ,	0   ,	a],
 	[s(th)*c(ap) , c(th)*c(ap) , -s(ap) , -s(ap)*d],
-	[s(th)*s(ap) , c(th)*s(ap) , c(ap) , c(ap)*d],
-	[0 ,	0 ,	0 ,	1]
+	[s(th)*s(ap) , c(th)*s(ap) , c(ap)  , c(ap)*d],
+	[0           ,	0          ,	0   ,	1]
 	])
 	return R
 def APX(a,b,c):
@@ -299,16 +299,41 @@ def ikin(FBE):
 def FWDKIN2(a1,a2,a3,a4,a5,a6):
 
 	dr=pi()/180
-	FBT0 = DH( 0    ,   0       ,   173.9           , 0     )
-	F0T1 = DH( 0        ,   0       ,   0           ,   a1*dr       )
-	F1T2 = DH( -pi()/2    ,   0       ,   0           ,   a2*dr - pi()/2 )
-	F2T3 = DH( 0        ,   135     ,   0           ,   a3*dr        )
-	F3T4 = DH( 0        ,   120     ,   88.78       ,   a4*dr + pi()/2 )
-	F4T5 = DH( pi()/2     ,   0       ,   95          ,   a5*dr        )
-	F5T6 = DH( -pi()/2    ,   0       ,   0           ,   a6*dr        )
-	F6TE = DH( 0        ,   0       , 65.5          ,   0    )
 
-	RET =mm(mm( mm(FBT0, F0T1),mm( F1T2 , F2T3 )), mm(mm( F3T4 , F4T5) , mm( F5T6 , F6TE)))
+	FBT0 = DH( 0		,   0	,   173.9	,   0     )
+	F0T1 = DH( 0		,   0	,   0		,   a1*dr       )
+	F1T2 = DH( -pi()/2	,   0	,   0		,   a2*dr - pi()/2 )
+	F2T3 = DH( 0		,   135	,   0		,   a3*dr        )
+	F3T4 = DH( 0		,   120	,   88.78	,   a4*dr + pi()/2 )
+	F4T5 = DH( pi()/2	,   0	,   95		,   a5*dr        )
+	F5T6 = DH( -pi()/2	,   0	,   0		,   a6*dr        )
+	F6TE = DH( 0		,   0	, 65.5		,   0    )
+
+	FBT1= mm(FBT0, F0T1)
+	print("FBT1")
+	print(FBT1)
+
+	F1T3=mm( F1T2 , F2T3 )
+	print("F1T3")
+	print(F1T3)
+
+	F3T5=mm( F3T4 , F4T5)
+	print("F3T5")
+	print(F3T5)
+
+	F5TE= mm( F5T6 , F6TE)
+	print("F5TE")
+	print(F5TE)
+
+	FBT3=mm(FBT1,F1T3)
+	print("FBT3")
+	print(FBT3)
+	
+	F3TE=mm(F3T5,F5TE)
+	print("F3TE")
+	print(F3TE)
+	print("end")
+	RET =mm(FBT3,F3TE)
 
 	return RET
 def main():
@@ -357,10 +382,10 @@ def funktest():
 	print(str(APX(-3, -1, 2.5))+"should be true")
 
 
-	FK=FWDKIN2(60, 90, 0, 0, 40, 0)
+	FK=FWDKIN2(60,130, 20, 10, 40, -10)
 	print(FK)
 	R=ZYZint(60, FK)
-	print(R.*pi()/180)
+	print(pi()/180)
 
 
 
